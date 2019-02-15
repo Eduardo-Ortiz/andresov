@@ -35,7 +35,7 @@
                 @endif
             </td>
             <td style="padding-top: 8px">
-                <a class="button is-black" href="{{url($file->ruta)}}">
+                <a class="button is-black" href="{{Storage::url($file->ruta)}}">
                     <span>Descargar</span>
                     <span class="icon">
                         <i class="fas fa-file-download"></i>
