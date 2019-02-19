@@ -6,6 +6,7 @@ use App\File;
 use App\Group;
 use App\Http\Resources\GroupResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -27,7 +28,16 @@ class AdminController extends Controller
         $user->direccion = $data["direccion"];
         $user->save();
         //$request->session()->flash('success', 'Acceso <b> '.$user->username.'</b> creado correctamente');
-        return ['redirect' => route('admin')];
+        return json_encode(GroupResource::collection(Group::all()));
+        //return view('admin/index');
+    }
+
+    public function deleteGroup(Request $request)
+    {
+        $data = request();
+        $grupo = Group::find($data["id"]);
+        $grupo->delete();
+        return json_encode(GroupResource::collection(Group::all()));
         //return view('admin/index');
     }
 
@@ -47,5 +57,21 @@ class AdminController extends Controller
         $file->ruta = $path;
 
         $file->save();
+
+        return json_encode(GroupResource::collection(Group::all()));
+    }
+
+    public function deleteFile(Request $request)
+    {
+        $data = request();
+        $archivo = File::find($data["id"]);
+        $archivo->delete();
+        return json_encode(GroupResource::collection(Group::all()));
+        //return view('admin/index');
+    }
+
+    public function download(File $file)
+    {
+        return Storage::download($file->ruta);
     }
 }

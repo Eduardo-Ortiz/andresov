@@ -18,6 +18,7 @@ class CreateGroupsTable extends Migration
             $table->string('nombre');
             $table->string('materia');
             $table->string('direccion');
+            $table->boolean('eliminado')->default(false);
             $table->timestamps();
         });
     }

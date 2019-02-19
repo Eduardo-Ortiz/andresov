@@ -4,7 +4,12 @@
 
     <div id="app">
         <h1 class="title is-3">Panel de Administrador</h1>
-        <a class="button is-medium is-fullwidth" v-on:click="crearGrupo=true">Crear Nuevo Grupo</a>
+        <button class="button is-medium is-fullwidth is-black" v-on:click="crearGrupo=true">
+            <span>Crear Grupo</span>
+            <span class="icon">
+                <i class="fas fa-folder-plus"></i>
+            </span>
+        </button>
 
         <hr>
 
@@ -62,7 +67,7 @@
                     </div>
                 </section>
                 <footer class="modal-card-foot">
-                    <button v-bind:class="{ 'is-loading': cargandoGrupos }" class="button is-black" v-on:click="guardarGrupo()">Crear Grupo</button>
+                    <button v-bind:class="{ 'is-loading': loading }" class="button is-black" v-on:click="guardarGrupo()">Crear Grupo</button>
                     <button class="button" v-on:click="crearGrupo=false">Cancelar</button>
                 </footer>
             </div>
@@ -123,25 +128,10 @@
                             </div>
                         </div>
 
-
-                        <div class="field is-horizontal" style="margin-top: 12px">
-                            <div class="field-label is-normal">
-                                <label class="label">Paginas:</label>
-                            </div>
-
-                            <div class="field-body">
-                                <div class="field">
-                                    <input v-model="nombreArchivo" class="input" type="text" placeholder="Desde" style="width: 80px;text-align: center">
-                                    <input v-model="nombreArchivo" class="input" type="text" placeholder="Hasta" style="width: 80px">
-                                </div>
-
-                            </div>
-                        </div>
-
                     </div>
                 </section>
                 <footer class="modal-card-foot">
-                    <button v-bind:class="{ 'is-loading': cargandoGrupos }" class="button is-black" v-on:click="guardarArchivo()">Crear Grupo</button>
+                    <button v-bind:class="{ 'is-loading': loading }" class="button is-black" v-on:click="guardarArchivo()">Crear Grupo</button>
                     <button class="button" v-on:click="subirArchivo=false">Cancelar</button>
                 </footer>
             </div>
@@ -155,36 +145,105 @@
                         <p class="card-header-title">
                             Grupo: @{{value.nombre}} - @{{value.materia}}
                         </p>
-                        <a href="#" class="card-header-icon" aria-label="more options">
-      <span class="icon" v-on:click="datosGrupos[index].expandido=true">
+                        <a class="card-header-icon" aria-label="more options" v-on:click="datosGrupos[index].expandido=!datosGrupos[index].expandido">
+
+      <span class="icon" v-if="datosGrupos[index].expandido">
+        <i class="fas fa-angle-up" aria-hidden="true"></i>
+      </span>
+                            <span class="icon" v-else>
         <i class="fas fa-angle-down" aria-hidden="true"></i>
       </span>
                         </a>
                     </header>
                     <div class="card-content" v-show="value.expandido==true">
                         <div class="content">
-                            <button class="button is-pulled-left" v-on:click="modalArchivo(index)">Subir Archivo</button>
-                            <button class="button is-pulled-right">Eliminar</button>
-                            <button class="button is-pulled-right" style="margin-right: 10px">Limpiar</button>
+
+
+
+
+                            <button class="button is-pulled-left" v-on:click="modalArchivo(index)">
+                                <span>Subir Archivo</span>
+                                <span class="icon">
+                                   <i class="fas fa-file-upload"></i>
+                                </span>
+                            </button>
+                            <button class="button is-pulled-right" v-on:click="eliminarGrupo(value.id)">
+                                <span>Eliminar Grupo</span>
+                                <span class="icon">
+                                   <i class="fas fa-trash-alt"></i>
+                                </span>
+                            </button>
+                            <button class="button is-pulled-right" style="margin-right: 10px">
+                                <span>Limpiar Archivos</span>
+                                <span class="icon">
+                                   <i class="fas fa-broom"></i>
+                                </span>
+                            </button>
 
                             <div class="is-clearfix">
 
+
                             </div>
 
-                            <table  class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth" style="margin-top: 15px">
+                            <div class="field has-addons" style="margin-top: 15px">
+                                <p class="control">
+                                    <a class="button">
+                                        Dirección del Grupo
+                                    </a>
+                                </p>
+                                <p class="control is-expanded">
+                                    <input class="input" type="text" placeholder="Amount of money" disabled v-model="value.ruta">
+                                </p>
+                                <p class="control">
+                                    <button v-on:click="copiarGrupo(value.ruta)" class="button is-black"><span>Copiar</span>
+                                        <span class="icon">
+                                          <i class="fas fa-copy"></i>
+                                    </span>
+                                    </button>
+                                </p>
+                            </div>
+
+                            <table  class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth" style="margin-top: -12px">
                                 <thead>
                                 <tr>
                                     <th style="width: 1px !important">#</th>
                                     <th style="min-width: 200px">Archivo</th>
-                                    <th style="min-width: 200px">Extension</th>
-                                    <th style="min-width: 200px">Descargas</th>
-                                    <th style="width: 25px">Ver</th>
-                                    <th style="width: 25px">Eliminar</th>
+                                    <th style="width: 1px !important">Fecha</th>
+                                    <th style="width: 1px !important;">Tipo</th>
+                                    <th style="width: 1px !important">Des.Uni.</th>
+                                    <th style="width: 1px !important">Des.Tot.</th>
+                                    <th style="width: 1px !important">Descargar</th>
+                                    <th style="width: 1px !important">Eliminar</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="(user,index) in users">
-                                    <td>@{{user.id}}</td>
+                                <tr v-for="(archivo,index) in value.archivos">
+                                    <td style="padding-top:8px">@{{index+1}}</td>
+                                    <td style="padding-top:8px">@{{archivo.nombre}}</td>
+                                    <td style="padding-top:8px">@{{archivo.fecha}}</td>
+                                    <td style="text-align: center">
+                                        <img v-if="archivo.extension=='doc'||archivo.extension=='docx'" style="margin-top: 5px" src="{{URL::asset('images/doc.png')}}" width="20" alt="Word">
+                                        <img v-if="archivo.extension=='pdf'" style="margin-top: 5px" src="{{URL::asset('images/pdf.png')}}" width="20" alt="PDF">
+                                        <img v-if="archivo.extension=='xls'||archivo.extension=='xlsx'" style="margin-top: 5px" src="{{URL::asset('images/xls.png')}}" width="20" alt="Excel">
+                                    </td>
+                                    <td style="padding-top:8px;text-align: center">@{{archivo.descargas_unicas}}</td>
+                                    <td style="padding-top:8px;text-align: center">@{{archivo.descargas_totales}}</td>
+                                    <td style="padding-top:6px">
+                                        <a class="button is-black is-small" v-bind:href="rutaDescargas+'/'+archivo.id">
+                                            <span>Descargar</span>
+                                            <span class="icon">
+                                                <i class="fas fa-file-download"></i>
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td style="padding-top:6px">
+                                        <a class="button is-small" v-on:click="eliminarArchivo(archivo.id)">
+                                            <span>Eliminar</span>
+                                            <span class="icon">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </span>
+                                        </a>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -222,11 +281,15 @@
     <script>
         var grupos = <?php echo json_encode($grupos) ?>;
 
+
+        var rutaDescargas = '<?php echo url('admin/files') ?>';
+
         const app = new Vue({
             el: '#app',
             data: {
 
                 datosGrupos : [],
+                rutaDescargas : null,
 
                 crearGrupo : false,
                 cargandoGrupos : false,
@@ -240,24 +303,27 @@
 
                 nombreGrupo : null,
                 materiaGrupo : null,
-                direccionGrupo : null
+                direccionGrupo : null,
+
+                loading :false
             },
             methods: {
                 guardarGrupo : function () {
 
+                    this.loading = true;
                     axios.post('<?php echo route('groups_store') ?>', {
                         nombre : app.nombreGrupo,
                         materia : app.materiaGrupo,
                         direccion : app.direccionGrupo
                     }).then(function (response) {
-                        window.location = response.data.redirect;
+                        app.datosGrupos = response.data;
+                        app.crearGrupo = false;
+                        app.loading = false;
                     });
                 },
 
                 guardarArchivo : function () {
                     var archivo = document.getElementById('archivo').files[0];
-
-
                     var data = new FormData();
                     var settings = { headers: { 'content-type': 'multipart/form-data' } };
 
@@ -265,10 +331,28 @@
                     data.append('nombre', this.nombreArchivo);
                     data.append('group_id', this.datosGrupos[app.grupoSelect].id);
 
+                    this.loading = true;
+
                     axios.post('<?php echo route('files_store') ?>', data,settings).
                     then(function (response) {
-                       // window.location = response.data.redirect;
+                        app.datosGrupos = response.data;
+                        app.subirArchivo = false;
+                        for(i=0;i<app.datosGrupos.length;i++)
+                        {
+                            app.datosGrupos[app.grupoSelect].expandido = true;
+                        }
+                        app.loading = false;
                     });
+                },
+
+                copiarGrupo : function(value) {
+                    var tempInput = document.createElement("input");
+                    tempInput.style = "position: absolute; left: -1000px; top: -1000px";
+                    tempInput.value = value;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(tempInput);
                 },
 
                 modalArchivo : function (index)
@@ -276,11 +360,36 @@
                     this.grupoSelect = index;
                     this.subirArchivo = true;
                     this.grupoArchivo = this.datosGrupos[index].nombre + " - "+ this.datosGrupos[index].materia;
+                },
+                eliminarGrupo : function (id)
+                {
+                    this.loading = true;
+                    axios.post('<?php echo route('groups_delete') ?>', {
+                        id : id
+                    }).then(function (response) {
+                        app.datosGrupos = response.data;
+                        app.loading = false;
+                    });
+                },
+                eliminarArchivo : function (id)
+                {
+                    this.loading = true;
+                    axios.post('<?php echo route('files_delete') ?>', {
+                        id : id
+                    }).then(function (response) {
+                        app.datosGrupos = response.data;
+                        for(i=0;i<app.datosGrupos.length;i++)
+                        {
+                            app.datosGrupos[app.grupoSelect].expandido = true;
+                        }
+                        app.loading = false;
+                    });
                 }
             },
             mounted: function ()
             {
                 this.datosGrupos = grupos;
+                this.rutaDescargas = rutaDescargas;
             }
         })
     </script>

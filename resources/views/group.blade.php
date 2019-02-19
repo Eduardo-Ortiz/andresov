@@ -6,8 +6,6 @@
         <h1 class="title is-3">{{$grupo->nombre}} - {{$grupo->materia}}</h1>
     </div>
 
-
-
     <table  class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth" style="margin-top: 15px">
     <thead>
     <tr>
@@ -35,7 +33,7 @@
                 @endif
             </td>
             <td style="padding-top: 8px">
-                <a class="button is-black" href="{{Storage::url($file->ruta)}}">
+                <a class="button is-black" href="{{route('descargar', $file->id)}}">
                     <span>Descargar</span>
                     <span class="icon">
                         <i class="fas fa-file-download"></i>

@@ -29,6 +29,18 @@ Route::get('/admin', 'AdminController@index')->name('admin')->middleware('auth')
 
 Route::get('/{test}', 'GroupController@index')->name('grupo');
 
+Route::post('/code', 'GroupController@code')->name('group_code');
+
+Route::get('/files/{file}', 'GroupController@download')->name('descargar');
+
+Route::get('admin/files/{file}', 'AdminController@download')->name('descargar_admin');
+
 Route::post('/admin/grupos/store', 'AdminController@storeGroup')->name('groups_store')->middleware('auth');
 
+Route::post('/admin/grupos/delete', 'AdminController@deleteGroup')->name('groups_delete')->middleware('auth');
+
+Route::post('/admin/files/delete', 'AdminController@deleteFile')->name('files_delete')->middleware('auth');
+
 Route::post('/admin/archivos/store', 'AdminController@storeFile')->name('files_store')->middleware('auth');
+
+

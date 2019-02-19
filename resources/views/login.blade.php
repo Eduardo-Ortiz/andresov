@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Heugen | Dashboard</title>
+    <title>Conalep | Ingresar</title>
     <link rel="icon"
           type="image/png"
           href="{{URL::asset('favicon.ico')}}" />
@@ -76,7 +76,7 @@
                     </div>
 
                     <div class="has-text-centered" style="margin-top: 10px">
-                        <span class="title is-5">Volver al inicio: <a href="{{url('user/sign-up')}}">Pagina Principal</a></span>
+                        <span class="title is-5">Volver al inicio: <a href="{{url('/')}}">Pagina Principal</a></span>
                     </div>
 
                 </form>

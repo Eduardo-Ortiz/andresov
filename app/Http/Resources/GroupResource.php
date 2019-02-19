@@ -20,7 +20,8 @@ class GroupResource extends JsonResource
             'materia' => $this->materia,
             'direccion' => $this->direccion,
             'expandido' => false,
-            'archivos' => $this->files
+            'archivos' => FileResource::collection($this->files),
+            'ruta' => url('/')."/".$this->direccion
         ];
     }
 }

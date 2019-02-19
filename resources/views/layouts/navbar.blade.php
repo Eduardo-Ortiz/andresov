@@ -1,8 +1,8 @@
 <nav class="navbar is-light" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-        <a class="navbar-item" href="https://bulma.io">
+        <span class="navbar-item">
             <img src="{{URL::asset('images/logo.png')}}" width="135" alt="Conalep">
-        </a>
+        </span>
 
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
             <span aria-hidden="true"></span>
@@ -13,12 +13,10 @@
 
     <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
+            <!--
             <a class="navbar-item">
                 Inicio
             </a>
-
-
-
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
                     More
@@ -39,9 +37,20 @@
                         Report an issue
                     </a>
                 </div>
-            </div>
+            </div>-->
         </div>
 
 
     </div>
+
+    @if (Auth::check())
+        <div class="navbar-end">
+            <a class="navbar-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                Cerrar Sesión
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                {{ csrf_field() }}
+            </form>
+        </div>
+    @endif
 </nav>
